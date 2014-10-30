@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import utils.LinesIterator;
+
 
 public class Emission {
 	
@@ -26,8 +28,9 @@ public class Emission {
 	 */
 	public void readTagCount(InputStream countInput) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(countInput));
-		String line ;
-		while((line = br.readLine()) != null){
+		LinesIterator lines = new LinesIterator(countInput);
+		while(lines.hasNext()){
+			String line = lines.next();
 			Iterator<String> words = wordIterator(line);
 			if(words.hasNext()){
 				int count = Integer.parseInt(words.next());
@@ -35,14 +38,15 @@ public class Emission {
 				if("WORDTAG".equals(type)){
 					String tag = words.next() ;
 					String word = words.next();
-					if(tagCount.containsKey(tag)){
-						Map<String, Integer> tagMap = tagCount.get(tag);
-						if(tagMap.containsKey(word)){
-							//Should not happen
-							tagMap.put(word, tagMap.get(word) + count);
-						}else{
-							tagMap.put(word, count);
-						}
+					if(!tagCount.containsKey(tag)){
+						tagCount.put(tag, new HashMap<String, Integer>());
+					}
+					Map<String, Integer> wordMap = tagCount.get(tag);
+					if(wordMap.containsKey(word)){
+						//Should not happen
+						wordMap.put(word, wordMap.get(word) + count);
+					}else{
+						wordMap.put(word, count);
 					}
 				}else if("1-GRAM".equals(type)){
 					

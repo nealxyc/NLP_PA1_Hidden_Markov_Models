@@ -1,3 +1,4 @@
+package utils;
 import static org.junit.Assert.*;
 
 import java.util.Iterator;
@@ -7,17 +8,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import utils.WordsIterator;
 
-public class EmissionTest {
 
-	Emission e = new Emission();
-	
+public class WordsIteratorTest {
+
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
 	@Test
 	public void testWordIterator(){
-		Iterator<String> itr = e.wordIterator("A B C");
+		Iterator<String> itr = new WordsIterator("A B C");
 		assertTrue(itr.hasNext());
 		assertEquals("A", itr.next());
 		assertTrue(itr.hasNext());
@@ -32,7 +33,7 @@ public class EmissionTest {
 	
 	@Test
 	public void testWordIteratorNull(){
-		Iterator<String> itr = e.wordIterator(null);
+		Iterator<String> itr =new WordsIterator(null);
 		
 		assertFalse(itr.hasNext());
 		exception.expect(NoSuchElementException.class);
@@ -41,7 +42,7 @@ public class EmissionTest {
 	
 	@Test
 	public void testWordIteratorEmptyString(){
-		Iterator<String> itr = e.wordIterator("");
+		Iterator<String> itr = new WordsIterator("");
 		
 		assertFalse(itr.hasNext());
 		exception.expect(NoSuchElementException.class);
